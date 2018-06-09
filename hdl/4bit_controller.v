@@ -107,7 +107,7 @@ always @(posedge advance_signal or posedge reset_signal) begin
             end
             CALC_OUTPUT: begin
                inputa <= in;
-					state <= LOAD_IN_A;  
+			   state <= LOAD_IN_A;  
             end
         endcase
     end
