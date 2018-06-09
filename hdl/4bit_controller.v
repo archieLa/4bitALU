@@ -62,7 +62,7 @@ always@(state) begin
     end
     CALC_OUTPUT: begin
     cout = helper;
-	 out = temp_out;
+	out = temp_out;
     out_control_display = O;
     end
   endcase
@@ -81,38 +81,39 @@ always @(posedge advance_signal or posedge reset_signal) begin
     else begin
         case (state)
             RESET: begin
-					inputa <= in;
-					state = LOAD_IN_A;
+			inputa <= in;
+			state = LOAD_IN_A;
             end
             LOAD_IN_A: begin
-               inputb <= in;
-					state <= LOAD_IN_B;
+            inputb <= in;
+			state <= LOAD_IN_B;
             end
             LOAD_IN_B: begin
-                carry_in <= in[0];
-					 state <= LOAD_CIN;
+            carry_in <= in[0];
+			state <= LOAD_CIN;
             end
             LOAD_CIN: begin
-                instruction <= in;
-					 state <= LOAD_INSTRUCTION;
+            instruction <= in;
+			state <= LOAD_INSTRUCTION;
             end
             LOAD_INSTRUCTION: begin
-					 if (instruction == ADD || instruction == SUB) begin
-						helper <= temp_cout;
-					 end
-					 else begin
-					 helper = ZERO_1BIT; 
-					 end
-					 state <= CALC_OUTPUT;
+			if (instruction == ADD || instruction == SUB) begin
+				helper <= temp_cout;
+			 end
+			 else begin
+				helper = ZERO_1BIT; 
+			end
+			state <= CALC_OUTPUT;
             end
             CALC_OUTPUT: begin
-               inputa <= in;
-			   state <= LOAD_IN_A;  
+            inputa <= in;
+			state <= LOAD_IN_A;  
             end
         endcase
     end
 end
 
+// Create instance of ALU to perform operations
 ALU_4bit alu(.in1(inputa), .in2(inputb), .cin(carry_in), .opcode(instruction),
  .cout(temp_cout), .out(temp_out));
 
